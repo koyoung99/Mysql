@@ -62,8 +62,14 @@ and e.department_id='90'
 ;
 
 # 문제8
+select d.department_name, avg(e.salary) avgSalary
+from employees e
+join departments d on e.department_id = d.department_id
+where e.department_id in (select department_id from employees group by department_id)
+group by e.department_id
+order by avg(e.salary) desc;
+-- 그룹함수 사용;
 
-# 문제9
 # 문제9
 select r.region_name, avg(e.salary) avgSalary
 from employees e
@@ -73,7 +79,13 @@ join countries c on l.country_id=c.country_id
 join regions r on r.region_id=c.region_id
 group by r.region_name
 order by avg(salary) desc
-limit 0,1
-;
+limit 0,1;
 
 # 문제10
+select j.job_title, avg(e.salary) salary
+from employees e
+join jobs j on e.job_id = j.job_id
+where (e.job_id, e.salary) in (select job_id, max(salary) from employees group by job_id)
+group by j.job_id, j.job_title
+order by avg(salary) desc;
+-- 그룹함수 사용;
