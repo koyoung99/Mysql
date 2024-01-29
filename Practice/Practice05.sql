@@ -85,7 +85,5 @@ limit 0,1;
 select j.job_title, avg(e.salary) salary
 from employees e
 join jobs j on e.job_id = j.job_id
-where (e.job_id, e.salary) in (select job_id, max(salary) from employees group by job_id)
-group by j.job_id, j.job_title
-order by avg(salary) desc;
--- 그룹함수 사용;
+where e.salary=(select max(salary) from employees)
+group by j.job_id, j.job_title;
