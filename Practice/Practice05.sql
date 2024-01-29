@@ -54,14 +54,24 @@ select e.employee_id 사번,
        e.first_name 이름,
        e.salary 월급,
        j.job_title 업무명,
-
+-- 	   avg(salary) 부서평균월급
        e.department_id 부서아이디
 from employees e, jobs j
 where salary>(select avg(salary) from employees)
 and e.department_id='90'
 ;
 
-
 # 문제8
+
 # 문제9
+select r.region_name, avg(e.salary) avgSalary
+from employees e
+join departments d on e.department_id=d.department_id
+join locations l on d.location_id=l.location_id
+join countries c on l.country_id=c.country_id
+join regions r on r.region_id=c.region_id
+group by r.region_name
+limit 1,1
+;
+
 # 문제10
