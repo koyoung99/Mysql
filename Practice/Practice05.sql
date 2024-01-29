@@ -64,6 +64,7 @@ and e.department_id='90'
 # 문제8
 
 # 문제9
+# 문제9
 select r.region_name, avg(e.salary) avgSalary
 from employees e
 join departments d on e.department_id=d.department_id
@@ -71,7 +72,8 @@ join locations l on d.location_id=l.location_id
 join countries c on l.country_id=c.country_id
 join regions r on r.region_id=c.region_id
 group by r.region_name
-limit 1,1
+order by avg(salary) desc
+limit 0,1
 ;
 
 # 문제10
