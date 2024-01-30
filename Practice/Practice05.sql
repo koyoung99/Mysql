@@ -50,25 +50,31 @@ where hire_date in (select max(hire_date) from employees);
 
 # 문제7
 select e.employee_id 사번,
-	   e.last_name 성,
-       e.first_name 이름,
+	   e.first_name 성,
+	   e.last_name 이름,
        e.salary 월급,
        j.job_title 업무명,
--- 	   avg(salary) 부서평균월급
+	   s.asalary 부서평균월급,
        e.department_id 부서아이디
-from employees e, jobs j
-where salary>(select avg(salary) from employees)
-and e.department_id='90'
-;
+from employees e
+join jobs j on e.job_id=j.job_id
+join (select department_id, avg(salary) asalary from employees group by department_id) s on e.department_id=s.department_id
+group by e.employee_id, s.asalary, e.department_id 
+having s.asalary >= (select max(asalary) from employees e, 
+					(select avg(salary) asalary, department_id
+					 from employees group by department_id) s where e.department_id = s.department_id);
+
 
 # 문제8
-select d.department_name, avg(e.salary) avgSalary
+select d.department_name, asalary avgSalary
 from employees e
 join departments d on e.department_id = d.department_id
-where e.department_id in (select department_id from employees group by department_id)
+join (select department_id, avg(salary) asalary from employees group by department_id) s on e.department_id=s.department_id
 group by e.department_id
-order by avg(e.salary) desc;
--- 그룹함수 사용;
+having s.asalary >= (select max(asalary) from employees e, 
+				    (select avg(salary) asalary, department_id
+					 from employees group by department_id) s where e.department_id = s.department_id);
+-- 그룹함수 사용
 
 # 문제9
 select r.region_name, avg(e.salary) avgSalary
