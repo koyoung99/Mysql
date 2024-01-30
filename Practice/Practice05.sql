@@ -74,7 +74,6 @@ group by e.department_id
 having s.asalary >= (select max(asalary) from employees e, 
 				    (select avg(salary) asalary, department_id
 					 from employees group by department_id) s where e.department_id = s.department_id);
--- 그룹함수 사용
 
 # 문제9
 select r.region_name, avg(e.salary) avgSalary
